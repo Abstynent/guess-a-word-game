@@ -1,0 +1,35 @@
+body {
+}
+body nav {
+    display: flex;
+    justify-content: center;
+}
+
+body nav ul {
+    display: inline-flex;
+}
+
+body nav ul li {
+    font-size: 24px;
+    margin-right: 75px;
+    list-style-type: none;
+}
+
+#main_game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 48px;
+    margin-left: 40%;
+    margin-right: 40%;
+}
+
+#game {
+    display: flex;
+    justify-content: center;
+}
+
+#btn-start {
+    width: 100%;
+    height: 25px;
+}
