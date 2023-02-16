@@ -3,11 +3,13 @@ var lossesEl = document.querySelector("#losses");
 var timerEl = document.querySelector("#timer");
 var gameEl = document.querySelector("#game");
 var btnEl = document.querySelector("#btn-start");
+var gameStatusEl = document.querySelector("#game-status");
+var userAnswerEl = document.querySelector("#answer-box");
 
 var wins = 0;
 var losses = 0;
 var timer = 10;
-
+var originalWord = "";
 winsEl.innerHTML = wins;
 lossesEl.innerHTML = losses;
 timerEl.innerHTML = timer;
@@ -23,31 +25,37 @@ var wordsBank = {
 
 // ////////////////////////////////////////////
 
-function prepareWord() {
+function displayWord() {
     var rndSelection = Math.floor(Math.random() * wordsBank.count) + 1;
     var tempWord = "";
     switch(rndSelection) {
         case 1: 
+            originalWord = wordsBank.word1;
             tempWord = hideRandomLetters(wordsBank.word1);
             gameEl.textContent = tempWord;
             break;
         case 2:
+            originalWord = wordsBank.word2;
             tempWord = hideRandomLetters(wordsBank.word2);
             gameEl.textContent = tempWord;
             break;
         case 3:
+            originalWord = wordsBank.word3;
             tempWord = hideRandomLetters(wordsBank.word3);
             gameEl.textContent = tempWord;
             break;
         case 4:
+            originalWord = wordsBank.word4;
             tempWord = hideRandomLetters(wordsBank.word4);
             gameEl.textContent = tempWord;
             break;
         case 5:
+            originalWord = wordsBank.word5;
             tempWord = hideRandomLetters(wordsBank.word5);
             gameEl.textContent = tempWord;
             break;
     };
+    return tempWord;
 };
 
 function hideRandomLetters(word) {
@@ -59,27 +67,40 @@ function hideRandomLetters(word) {
     }
     return tempWord;
 };
-
-function displayWord(word) {
-    var tempWord = "";
-    for(var i =0; i < word.length; i++) {
-        tempWord += word[i];
-        tempWord += " ";
-    };
-    return tempWord;
+function endOfGame() {
+    gameEl.textContent = originalWord;
+    btnEl.disabled = false;
+    winsEl.innerHTML = wins;
+    lossesEl.innerHTML = losses;
+    timerEl.innerHTML = 10;
+    userAnswerEl.value = "";
 };
 
 btnEl.addEventListener("click", function() {
+    btnEl.disabled = true;
     var gameStatus = true;
     var timeLeft = timer;
-    prepareWord();
+
+    tempWord = displayWord();
     var timeInterval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = timeLeft;
+        var answer = userAnswerEl.value;
+
+        if(answer.toLowerCase() === originalWord) {
+            gameStatusEl.textContent = "Correct! You won.";
+            clearInterval(timeInterval);
+            wins++;
+            endOfGame();
+        }
+        if(timeLeft === 0) {
+            clearInterval(timeInterval);
+            gameStatusEl.textContent = "Time's up! You lose.";
+            gameStatus = false;
+            losses++;
+            endOfGame();
+        };
         
-        if(timeLeft === 0) clearInterval(timeInterval);
     }, 1000);
-
-
 });
 
