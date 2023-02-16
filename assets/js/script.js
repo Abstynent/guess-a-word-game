@@ -14,47 +14,23 @@ winsEl.innerHTML = wins;
 lossesEl.innerHTML = losses;
 timerEl.innerHTML = timer;
 
-var wordsBank = {
-    word1: "javascript",
-    word2: "boolean",
-    word3: "function",
-    word4: "argument",
-    word5: "document",
-    count: 5,
-};
+// var wordsBank = {
+//     word1: "javascript",
+//     word2: "boolean",
+//     word3: "function",
+//     word4: "argument",
+//     word5: "document",
+//     count: 5,
+// };
+
+var wordsBank = ["javascript", "boolean", "function", "argument", "document"];
 
 // ////////////////////////////////////////////
 
 function displayWord() {
-    var rndSelection = Math.floor(Math.random() * wordsBank.count) + 1;
-    var tempWord = "";
-    switch(rndSelection) {
-        case 1: 
-            originalWord = wordsBank.word1;
-            tempWord = hideRandomLetters(wordsBank.word1);
-            gameEl.textContent = tempWord;
-            break;
-        case 2:
-            originalWord = wordsBank.word2;
-            tempWord = hideRandomLetters(wordsBank.word2);
-            gameEl.textContent = tempWord;
-            break;
-        case 3:
-            originalWord = wordsBank.word3;
-            tempWord = hideRandomLetters(wordsBank.word3);
-            gameEl.textContent = tempWord;
-            break;
-        case 4:
-            originalWord = wordsBank.word4;
-            tempWord = hideRandomLetters(wordsBank.word4);
-            gameEl.textContent = tempWord;
-            break;
-        case 5:
-            originalWord = wordsBank.word5;
-            tempWord = hideRandomLetters(wordsBank.word5);
-            gameEl.textContent = tempWord;
-            break;
-    };
+    originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
+    var tempWord = hideRandomLetters(originalWord);
+    gameEl.textContent = tempWord;
     return tempWord;
 };
 
