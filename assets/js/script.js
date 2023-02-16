@@ -18,7 +18,7 @@ var wordsBank = {
     word3: "function",
     word4: "argument",
     word5: "document",
-    count: 5
+    count: 5,
 };
 
 // ////////////////////////////////////////////
@@ -29,30 +29,29 @@ function prepareWord() {
     switch(rndSelection) {
         case 1: 
             tempWord = hideRandomLetters(wordsBank.word1);
-            gameEl.textContent = displayWord(tempWord);
+            gameEl.textContent = tempWord;
             break;
         case 2:
             tempWord = hideRandomLetters(wordsBank.word2);
-            gameEl.textContent = displayWord(tempWord);
+            gameEl.textContent = tempWord;
             break;
         case 3:
             tempWord = hideRandomLetters(wordsBank.word3);
-            gameEl.textContent = displayWord(tempWord);
+            gameEl.textContent = tempWord;
             break;
         case 4:
             tempWord = hideRandomLetters(wordsBank.word4);
-            gameEl.textContent = displayWord(tempWord);
+            gameEl.textContent = tempWord;
             break;
         case 5:
             tempWord = hideRandomLetters(wordsBank.word5);
-            gameEl.textContent = displayWord(tempWord);
+            gameEl.textContent = tempWord;
             break;
     };
 };
 
 function hideRandomLetters(word) {
     var tempWord = "";
-    console.log(tempWord);
     for(var i = 0; i < word.length; i++) {
         var rndNumber = Math.floor(Math.random() * 2);
         if(rndNumber === 0) tempWord += word[i];
@@ -66,10 +65,21 @@ function displayWord(word) {
     for(var i =0; i < word.length; i++) {
         tempWord += word[i];
         tempWord += " ";
-        console.log(tempWord);
     };
     return tempWord;
 };
 
-prepareWord();
+btnEl.addEventListener("click", function() {
+    var gameStatus = true;
+    var timeLeft = timer;
+    prepareWord();
+    var timeInterval = setInterval(function() {
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+        
+        if(timeLeft === 0) clearInterval(timeInterval);
+    }, 1000);
+
+
+});
 
