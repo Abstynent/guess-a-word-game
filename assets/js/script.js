@@ -13,11 +13,11 @@ lossesEl.innerHTML = losses;
 timerEl.innerHTML = timer;
 
 var wordsBank = {
-    word1: ["javascript"],
-    word2: ["boolean"],
-    word3: ["class"],
-    word4: ["array"],
-    word5: ["button"],
+    word1: "javascript",
+    word2: "boolean",
+    word3: "function",
+    word4: "argument",
+    word5: "document",
     count: 5
 };
 
@@ -26,31 +26,50 @@ var wordsBank = {
 function prepareWord() {
     var rndSelection = Math.floor(Math.random() * wordsBank.count) + 1;
     var tempWord = "";
-    var selectedWord = "";
-    switch(1) { // change value later !!!!!!!!
+    switch(rndSelection) {
         case 1: 
-            var selectedWord = wordsBank.word1;
-            tempWord = hideRandomLetters(selectedWord);
-            displayWord(tempWord);
+            tempWord = hideRandomLetters(wordsBank.word1);
+            gameEl.textContent = displayWord(tempWord);
+            break;
         case 2:
+            tempWord = hideRandomLetters(wordsBank.word2);
+            gameEl.textContent = displayWord(tempWord);
+            break;
         case 3:
+            tempWord = hideRandomLetters(wordsBank.word3);
+            gameEl.textContent = displayWord(tempWord);
+            break;
         case 4:
+            tempWord = hideRandomLetters(wordsBank.word4);
+            gameEl.textContent = displayWord(tempWord);
+            break;
         case 5:
+            tempWord = hideRandomLetters(wordsBank.word5);
+            gameEl.textContent = displayWord(tempWord);
+            break;
     };
 };
 
 function hideRandomLetters(word) {
-    var tempWord = [];
+    var tempWord = "";
+    console.log(tempWord);
     for(var i = 0; i < word.length; i++) {
         var rndNumber = Math.floor(Math.random() * 2);
-        if(rndNumber === 0) tempWord[i] = word[i];
-        else tempWord[i] = "_";
+        if(rndNumber === 0) tempWord += word[i];
+        else tempWord += "_";
     }
     return tempWord;
 };
 
-function displayWord(tempWord) {
-we
+function displayWord(word) {
+    var tempWord = "";
+    for(var i =0; i < word.length; i++) {
+        tempWord += word[i];
+        tempWord += " ";
+        console.log(tempWord);
+    };
+    return tempWord;
 };
+
 prepareWord();
 
