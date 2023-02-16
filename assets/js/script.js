@@ -10,22 +10,25 @@ var wins = 0;
 var losses = 0;
 var timer = 10;
 var originalWord = "";
-winsEl.innerHTML = wins;
-lossesEl.innerHTML = losses;
-timerEl.innerHTML = timer;
-
-// var wordsBank = {
-//     word1: "javascript",
-//     word2: "boolean",
-//     word3: "function",
-//     word4: "argument",
-//     word5: "document",
-//     count: 5,
-// };
 
 var wordsBank = ["javascript", "boolean", "function", "argument", "document"];
 
-// ////////////////////////////////////////////
+renderLastResults();
+
+function renderLastResults() {
+    var savedWins = localStorage.getItem("wins");
+    var savedLosses = localStorage.getItem("losses");
+    if(savedWins > 0) wins = savedWins;
+    if(savedLosses > 0) losses = savedLosses;
+    renderGameStatistics();
+};
+
+function renderGameStatistics() {
+    timer = 10;
+    winsEl.innerHTML = wins;
+    lossesEl.innerHTML = losses;
+    timerEl.innerHTML = timer;
+};
 
 function displayWord() {
     originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
@@ -46,10 +49,10 @@ function hideRandomLetters(word) {
 function endOfGame() {
     gameEl.textContent = originalWord;
     btnEl.disabled = false;
-    winsEl.innerHTML = wins;
-    lossesEl.innerHTML = losses;
-    timerEl.innerHTML = 10;
+    renderGameStatistics();
     userAnswerEl.value = "";
+    localStorage.setItem("wins",wins);
+    localStorage.setItem("losses",losses);
 };
 
 btnEl.addEventListener("click", function() {
