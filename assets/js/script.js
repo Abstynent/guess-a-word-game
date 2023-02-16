@@ -31,6 +31,7 @@ function prepareWord() {
         case 1: 
             var selectedWord = wordsBank.word1;
             tempWord = hideRandomLetters(selectedWord);
+            displayWord(tempWord);
         case 2:
         case 3:
         case 4:
@@ -46,6 +47,10 @@ function hideRandomLetters(word) {
         else tempWord[i] = "_";
     }
     return tempWord;
+};
+
+function displayWord(tempWord) {
+we
 };
 prepareWord();
 
