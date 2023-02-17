@@ -30,22 +30,6 @@ function renderGameStatistics() {
     timerEl.innerHTML = timer;
 };
 
-function displayWord() {
-    originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
-    var tempWord = hideRandomLetters(originalWord);
-    gameEl.textContent = tempWord;
-    return tempWord;
-};
-
-function hideRandomLetters(word) {
-    var tempWord = "";
-    for(var i = 0; i < word.length; i++) {
-        var rndNumber = Math.floor(Math.random() * 2);
-        if(rndNumber === 0) tempWord += word[i];
-        else tempWord += "_";
-    }
-    return tempWord;
-};
 function endOfGame() {
     gameEl.textContent = originalWord;
     btnEl.disabled = false;
@@ -55,27 +39,44 @@ function endOfGame() {
     localStorage.setItem("losses",losses);
 };
 
+// MAIN GAME CODE 
+function keyDownAction(event) {
+    var pressedKey = event.key
+    // console.log("pressedKey: " + pressedKey);
+    // for(var i = 0; i < tempWord.length; i++){
+    //     if(pressedKey === originalWord[i]) {
+    //         tempWord[i] = pressedKey;
+    //         console.log("org i: " + originalWord[i]);
+    //     };
+    // };
+    return pressedKey;
+};
+
 btnEl.addEventListener("click", function() {
     btnEl.disabled = true;
-    var gameStatus = true;
+    // var gameStatus = true;
     var timeLeft = timer;
 
-    tempWord = displayWord();
+    tempWord = setWord();
     var timeInterval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = timeLeft;
         var answer = userAnswerEl.value;
+        pressedKey = document.addEventListener("keydown", keyDownAction);
+        console.log(pressedKey);
 
-        if(answer.toLowerCase() === originalWord) {
-            gameStatusEl.textContent = "Correct! You won.";
-            clearInterval(timeInterval);
-            wins++;
-            endOfGame();
-        }
+        // if(answer.toLowerCase() === originalWord) {
+        //     gameStatusEl.textContent = "Correct! You won.";
+        //     clearInterval(timeInterval);
+        //     wins++;
+        //     endOfGame();
+        // };
+
+        
         if(timeLeft === 0) {
             clearInterval(timeInterval);
             gameStatusEl.textContent = "Time's up! You lose.";
-            gameStatus = false;
+            // gameStatus = false;
             losses++;
             endOfGame();
         };
@@ -83,3 +84,28 @@ btnEl.addEventListener("click", function() {
     }, 1000);
 });
 
+function setWord() {
+    originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
+    var tempWord = "";
+    for(var i = 0; i !== originalWord.length; i++) tempWord += "_";
+    gameEl.textContent = tempWord;
+    return tempWord;
+};
+
+
+// function hideRandomLetters(word) {
+//     var tempWord = "";
+//     for(var i = 0; i < word.length; i++) {
+//         var rndNumber = Math.floor(Math.random() * 2);
+//         if(rndNumber === 0) tempWord += word[i];
+//         else tempWord += "_";
+//     }
+//     return tempWord;
+// };
+
+// function displayWord() {
+//     originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
+//     var tempWord = hideRandomLetters(originalWord);
+//     gameEl.textContent = tempWord;
+//     return tempWord;
+// }
