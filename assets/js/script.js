@@ -3,8 +3,7 @@ var lossesEl = document.querySelector("#losses");
 var timerEl = document.querySelector("#timer");
 var gameEl = document.querySelector("#game");
 var btnEl = document.querySelector("#btn-start");
-var gameStatusEl = document.querySelector("#game-status"); // not used?
-var userAnswerEl = document.querySelector("#answer-box"); // not used 
+var gameStatusEl = document.querySelector("#game-status");
 
 var wins = 0;
 var losses = 0;
@@ -35,7 +34,6 @@ function endOfGame() {
     gameEl.textContent = originalWord;
     btnEl.disabled = false;
     renderGameStatistics();
-    userAnswerEl.value = "";
     localStorage.setItem("wins",wins);
     localStorage.setItem("losses",losses);
 };
@@ -60,14 +58,12 @@ function renderBlankWord() {
 };
 btnEl.addEventListener("click", function() {
     btnEl.disabled = true;
-    // var gameStatus = true;
     var timeLeft = timer;
 
     blankWord = setWord();
     var timeInterval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = timeLeft;
-        // var answer = userAnswerEl.value;
         if(blankWord === originalWord) {
             clearInterval(timeInterval);
             gameStatusEl.textContent = "Correct! You won.";
@@ -78,7 +74,6 @@ btnEl.addEventListener("click", function() {
         if(timeLeft === 0) {
             clearInterval(timeInterval);
             gameStatusEl.textContent = "Time's up! You lose.";
-            // gameStatus = false;
             losses++;
             endOfGame();
         };
@@ -97,21 +92,3 @@ function setWord() {
     gameEl.textContent = blankWord;
     return blankWord;
 };
-
-
-// function hideRandomLetters(word) {
-//     var tempWord = "";
-//     for(var i = 0; i < word.length; i++) {
-//         var rndNumber = Math.floor(Math.random() * 2);
-//         if(rndNumber === 0) tempWord += word[i];
-//         else tempWord += "_";
-//     }
-//     return tempWord;
-// };
-
-// function displayWord() {
-//     originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
-//     var tempWord = hideRandomLetters(originalWord);
-//     gameEl.textContent = tempWord;
-//     return tempWord;
-// }

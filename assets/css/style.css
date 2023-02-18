@@ -35,14 +35,7 @@ body nav ul li {
     justify-content: center;
 
 }
-#btn-start {
+#btn {
     width: 100%;
     height: 25px;
-}
-
-#answer-box {
-    display: flex;
-    justify-content: center;
-    height: 2rem;
-    text-align: center;
 }
