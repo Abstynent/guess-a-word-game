@@ -3,13 +3,15 @@ var lossesEl = document.querySelector("#losses");
 var timerEl = document.querySelector("#timer");
 var gameEl = document.querySelector("#game");
 var btnEl = document.querySelector("#btn-start");
-var gameStatusEl = document.querySelector("#game-status");
-var userAnswerEl = document.querySelector("#answer-box");
+var gameStatusEl = document.querySelector("#game-status"); // not used?
+var userAnswerEl = document.querySelector("#answer-box"); // not used 
 
 var wins = 0;
 var losses = 0;
 var timer = 10;
 var originalWord = "";
+var letterGuessed = "";
+var blankWord = "";
 
 var wordsBank = ["javascript", "boolean", "function", "argument", "document"];
 
@@ -24,7 +26,6 @@ function renderLastResults() {
 };
 
 function renderGameStatistics() {
-    timer = 10;
     winsEl.innerHTML = wins;
     lossesEl.innerHTML = losses;
     timerEl.innerHTML = timer;
@@ -40,39 +41,40 @@ function endOfGame() {
 };
 
 // MAIN GAME CODE 
-function keyDownAction(event) {
-    var pressedKey = event.key
-    // console.log("pressedKey: " + pressedKey);
-    // for(var i = 0; i < tempWord.length; i++){
-    //     if(pressedKey === originalWord[i]) {
-    //         tempWord[i] = pressedKey;
-    //         console.log("org i: " + originalWord[i]);
-    //     };
-    // };
-    return pressedKey;
-};
+document.addEventListener("keydown", function(event) {
+    if(timer === 0) return;
 
+    var key = event.key.toLowerCase();
+    var alphabetNumericCharacters = "abcdefghijklmnopqrstuvwxyz0123456789 ".split("");
+    if (alphabetNumericCharacters.includes(key)) letterGuessed = key;
+    renderBlankWord();
+});
+
+function renderBlankWord() {
+    for(i = 0; i < originalWord.length; i++) {
+        if(originalWord[i] === letterGuessed) {
+            blankWord = setCharAt(blankWord, i, letterGuessed);
+            gameEl.textContent = blankWord;
+        };
+    };
+};
 btnEl.addEventListener("click", function() {
     btnEl.disabled = true;
     // var gameStatus = true;
     var timeLeft = timer;
 
-    tempWord = setWord();
+    blankWord = setWord();
     var timeInterval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = timeLeft;
-        var answer = userAnswerEl.value;
-        pressedKey = document.addEventListener("keydown", keyDownAction);
-        console.log(pressedKey);
+        // var answer = userAnswerEl.value;
+        if(blankWord === originalWord) {
+            clearInterval(timeInterval);
+            gameStatusEl.textContent = "Correct! You won.";
+            wins++;
+            endOfGame();
+        };
 
-        // if(answer.toLowerCase() === originalWord) {
-        //     gameStatusEl.textContent = "Correct! You won.";
-        //     clearInterval(timeInterval);
-        //     wins++;
-        //     endOfGame();
-        // };
-
-        
         if(timeLeft === 0) {
             clearInterval(timeInterval);
             gameStatusEl.textContent = "Time's up! You lose.";
@@ -84,12 +86,16 @@ btnEl.addEventListener("click", function() {
     }, 1000);
 });
 
+function setCharAt(str, index, chr) {
+    if(index > str.length -1 ) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+};
+
 function setWord() {
     originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
-    var tempWord = "";
-    for(var i = 0; i !== originalWord.length; i++) tempWord += "_";
-    gameEl.textContent = tempWord;
-    return tempWord;
+    for(var i = 0; i !== originalWord.length; i++) blankWord += "_";
+    gameEl.textContent = blankWord;
+    return blankWord;
 };
 
 
