@@ -2,7 +2,8 @@ var winsEl = document.querySelector("#wins");
 var lossesEl = document.querySelector("#losses");
 var timerEl = document.querySelector("#timer");
 var gameEl = document.querySelector("#game");
-var btnEl = document.querySelector("#btn-start");
+var btnStartEl = document.querySelector("#btn-start");
+var btnResetEl = document.querySelector("#btn-reset");
 var gameStatusEl = document.querySelector("#game-status");
 
 var wins = 0;
@@ -32,12 +33,42 @@ function renderGameStatistics() {
 
 function endOfGame() {
     gameEl.textContent = originalWord;
-    btnEl.disabled = false;
+    btnStartEl.disabled = false;
+    btnResetEl.disabled = false;
     renderGameStatistics();
     localStorage.setItem("wins",wins);
     localStorage.setItem("losses",losses);
+    blankWord = "";
 };
 
+function renderBlankWord() {
+    for(i = 0; i < originalWord.length; i++) {
+        if(originalWord[i] === letterGuessed) {
+            blankWord = setCharAt(blankWord, i, letterGuessed);
+            gameEl.textContent = blankWord;
+        };
+    };
+};
+
+function setCharAt(str, index, chr) {
+    if(index > str.length -1 ) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+};
+
+function setWord() {
+    originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
+    for(var i = 0; i !== originalWord.length; i++) blankWord += "_";
+    gameEl.textContent = blankWord;
+    return blankWord;
+};
+
+btnResetEl.addEventListener("click", function() {
+    wins = 0;
+    losses = 0;
+    localStorage.setItem("wins",wins);
+    localStorage.setItem("losses",losses);
+    renderGameStatistics();
+});
 // MAIN GAME CODE 
 document.addEventListener("keydown", function(event) {
     if(timer === 0) return;
@@ -48,16 +79,9 @@ document.addEventListener("keydown", function(event) {
     renderBlankWord();
 });
 
-function renderBlankWord() {
-    for(i = 0; i < originalWord.length; i++) {
-        if(originalWord[i] === letterGuessed) {
-            blankWord = setCharAt(blankWord, i, letterGuessed);
-            gameEl.textContent = blankWord;
-        };
-    };
-};
-btnEl.addEventListener("click", function() {
-    btnEl.disabled = true;
+btnStartEl.addEventListener("click", function() {
+    btnStartEl.disabled = true;
+    btnResetEl.disabled = true;
     var timeLeft = timer;
 
     blankWord = setWord();
@@ -80,15 +104,3 @@ btnEl.addEventListener("click", function() {
         
     }, 1000);
 });
-
-function setCharAt(str, index, chr) {
-    if(index > str.length -1 ) return str;
-    return str.substring(0,index) + chr + str.substring(index+1);
-};
-
-function setWord() {
-    originalWord = wordsBank[Math.floor(Math.random() * wordsBank.length)];
-    for(var i = 0; i !== originalWord.length; i++) blankWord += "_";
-    gameEl.textContent = blankWord;
-    return blankWord;
-};
